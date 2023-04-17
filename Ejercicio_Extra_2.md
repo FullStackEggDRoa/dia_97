@@ -44,3 +44,41 @@ SELECT codigo_oficina AS "Codigo Oficina", ciudad AS "Ciudad" FROM oficina;
 | Hilario         | Rodriguez Huertas | hrodriguez@jardineria.es |
 +-----------------+-------------------+--------------------------+
 ```
+### 4. Devuelve el nombre del puesto, nombre, apellidos y email del jefe de la empresa.
+```
+SELECT puesto AS "Nombre del Puesto", nombre AS "Nombre Empleado", CONCAT(apellido1," ",apellido2) AS "Apellidos", email AS "Correo Electrónico" FROM empleado WHERE codi
+go_jefe IS NULL;
++-------------------+-----------------+---------------+----------------------+
+| Nombre del Puesto | Nombre Empleado | Apellidos     | Correo Electrónico   |
++-------------------+-----------------+---------------+----------------------+
+| Director General  | Marcos          | Magaña Perez  | marcos@jardineria.es |
++-------------------+-----------------+---------------+----------------------+
+```
+### 5. Devuelve un listado con el nombre, apellidos y puesto de aquellos empleados que no sean representantes de ventas.
+```
+SELECT nombre AS "Nombre Empleado", CONCAT(apellido1," ",apellido2) AS "Apellidos", email AS "Correo Electrónico" FROM empleado WHERE NOT codigo_jefe=3;
++-----------------+--------------------+---------------------------+
+| Nombre Empleado | Apellidos          | Correo Electrónico        |
++-----------------+--------------------+---------------------------+
+| Ruben           | López Martinez     | rlopez@jardineria.es      |
+| Alberto         | Soria Carrasco     | asoria@jardineria.es      |
+| Maria           | Solís Jerez        | msolis@jardineria.es      |
+| Mariano         | López Murcia       | mlopez@jardineria.es      |
+| Lucio           | Campoamor Martín   | lcampoamor@jardineria.es  |
+| Hilario         | Rodriguez Huertas  | hrodriguez@jardineria.es  |
+| José Manuel     | Martinez De la Osa | jmmart@hotmail.es         |
+| David           | Palma Aceituno     | dpalma@jardineria.es      |
+| Oscar           | Palma Aceituno     | opalma@jardineria.es      |
+| Lionel          | Narvaez            | lnarvaez@gardening.com    |
+| Laurent         | Serra              | lserra@gardening.com      |
+| Walter Santiago | Sanchez Lopez      | wssanchez@gardening.com   |
+| Marcus          | Paxton             | mpaxton@gardening.com     |
+| Lorena          | Paxton             | lpaxton@gardening.com     |
+| Narumi          | Riko               | nriko@gardening.com       |
+| Takuma          | Nomura             | tnomura@gardening.com     |
+| Larry           | Westfalls          | lwestfalls@gardening.com  |
+| John            | Walton             | jwalton@gardening.com     |
+| Julian          | Bellinelli         | jbellinelli@gardening.com |
+| Mariko          | Kishi              | mkishi@gardening.com      |
++-----------------+--------------------+---------------------------+
+```
