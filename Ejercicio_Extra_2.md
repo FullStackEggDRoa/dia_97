@@ -128,6 +128,48 @@ SELECT DISTINCT estado AS "Estado de Pedidos" From pedido;
 | Pendiente         |
 +-------------------+
 ```
+### 8. Devuelve un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
+o Utilizando la función YEAR de MySQL.
+```
+SELECT DISTINCT codigo_cliente AS "Código Cliente" FROM pago WHERE YEAR(fecha_pago) = "2008";
++-----------------+
+| Código Cliente  |
++-----------------+
+|               1 |
+|              13 |
+|              14 |
+|              26 |
++-----------------+
+4 rows in set (0,02 sec)
+```
+o Utilizando la función DATE_FORMAT de MySQL.
+```
+SELECT DISTINCT codigo_cliente AS "Código Cliente" FROM pago WHERE DATE_FORMAT(fecha_pago,"%Y") = "2008";
++-----------------+
+| Código Cliente  |
++-----------------+
+|               1 |
+|              13 |
+|              14 |
+|              26 |
++-----------------+
+4 rows in set (0,00 sec)
+```
+o Sin utilizar ninguna de las funciones anteriores.
+```
+SELECT DISTINCT codigo_cliente AS "Código Cliente" FROM pago WHERE fecha_pago LIKE "%2008%";
++-----------------+
+| Código Cliente  |
++-----------------+
+|               1 |
+|              13 |
+|              14 |
+|              26 |
++-----------------+
+4 rows in set (0,00 sec)
+```
+### 
+
 
 ## Consultas multitabla (Composición Interna)
 ### 6. Lista la dirección de las oficinas que tengan clientes en Fuenlabrada
