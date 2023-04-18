@@ -82,3 +82,62 @@ SELECT nombre AS "Nombre Empleado", CONCAT(apellido1," ",apellido2) AS "Apellido
 | Mariko          | Kishi              | mkishi@gardening.com      |
 +-----------------+--------------------+---------------------------+
 ```
+### 6. Devuelve un listado con el nombre de los todos los clientes españoles.
+```
+ SELECT nombre_cliente AS "Nombre Cliente" FROM cliente WHERE pais = "Spain";
++--------------------------------+
+| Nombre Cliente                 |
++--------------------------------+
+| Lasas S.A.                     |
+| Beragua                        |
+| Club Golf Puerta del hierro    |
+| Naturagua                      |
+| DaraDistribuciones             |
+| Madrileña de riegos            |
+| Lasas S.A.                     |
+| Camunas Jardines S.L.          |
+| Dardena S.A.                   |
+| Jardin de Flores               |
+| Flores Marivi                  |
+| Flowers, S.A                   |
+| Naturajardin                   |
+| Golf S.A.                      |
+| Americh Golf Management SL     |
+| Aloha                          |
+| El Prat                        |
+| Sotogrande                     |
+| Vivero Humanes                 |
+| Fuenla City                    |
+| Jardines y Mansiones Cactus SL |
+| Jardinerías Matías SL          |
+| Agrojardin                     |
+| Top Campo                      |
+| Jardineria Sara                |
+| Campohermoso                   |
+| Flores S.L.                    |
++--------------------------------+
+```
+### 7. Devuelve un listado con los distintos estados por los que puede pasar un pedido.
+```
+SELECT DISTINCT estado AS "Estado de Pedidos" From pedido;
++-------------------+
+| Estado de Pedidos |
++-------------------+
+| Entregado         |
+| Rechazado         |
+| Pendiente         |
++-------------------+
+```
+
+## Consultas multitabla (Composición Interna)
+### 6. Lista la dirección de las oficinas que tengan clientes en Fuenlabrada
+```
+SELECT linea_direccion1 FROM oficina INNER JOIN empleado ON oficina.codigo_oficina = empleado.codigo_oficina WHERE codigo_empleado IN (SELECT codigo_empleado_rep_ventas FROM cliente WHERE ciudad = "Fuenlabrada");
++------------------------------+
+| linea_direccion1             |
++------------------------------+
+| Bulevar Indalecio Prieto, 32 |
+| Francisco Aguirre, 32        |
+| 5-11 Wentworth Avenue        |
++------------------------------+
+```
