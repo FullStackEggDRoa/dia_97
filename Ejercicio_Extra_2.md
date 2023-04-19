@@ -531,30 +531,31 @@ T DISTINCT codigo_cliente FROM pago);
 ```
 ### 5. Devuelve el nombre de los clientes que no hayan hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
 ```
-SELECT nombre_cliente AS "Nombre Cliente", CONCAT (nombre," ", apellido1," ", apellido2) AS "Representante de Ventas", codigo_oficina AS "Ciudad Oficina"  FROM cliente INNER JOIN empleado ON cliente.codigo_empleado_rep_ventas = empleado.codigo_empleado WHERE codigo_cliente NOT IN (SELECT DISTINCT codigo_cliente FROM pago);
-+-----------------------------+---------------------------------+----------------+
-| Nombre Cliente              | Representante de Ventas         | Ciudad Oficina |
-+-----------------------------+---------------------------------+----------------+
-| Lasas S.A.                  | Mariano López Murcia            | MAD-ES         |
-| Club Golf Puerta del hierro | Emmanuel Magaña Perez           | BCN-ES         |
-| DaraDistribuciones          | Emmanuel Magaña Perez           | BCN-ES         |
-| Madrileña de riegos         | Emmanuel Magaña Perez           | BCN-ES         |
-| Lasas S.A.                  | Mariano López Murcia            | MAD-ES         |
-| Flowers, S.A                | Felipe Rosas Marquez            | TAL-ES         |
-| Naturajardin                | Julian Bellinelli               | SYD-AU         |
-| Americh Golf Management SL  | José Manuel Martinez De la Osa  | BCN-ES         |
-| Aloha                       | José Manuel Martinez De la Osa  | BCN-ES         |
-| El Prat                     | José Manuel Martinez De la Osa  | BCN-ES         |
-| Vivero Humanes              | Julian Bellinelli               | SYD-AU         |
-| Fuenla City                 | Felipe Rosas Marquez            | TAL-ES         |
-| Top Campo                   | Felipe Rosas Marquez            | TAL-ES         |
-| Campohermoso                | Julian Bellinelli               | SYD-AU         |
-| france telecom              | Lionel Narvaez                  | PAR-FR         |
-| Musée du Louvre             | Lionel Narvaez                  | PAR-FR         |
-| Flores S.L.                 | Michael Bolton                  | SFC-USA        |
-| The Magic Garden            | Michael Bolton                  | SFC-USA        |
-+-----------------------------+---------------------------------+----------------+
-18 rows in set (0,01 sec)
+SELECT nombre_cliente AS "Nombre Cliente", CONCAT (nombre," ", apellido1," ", apellido2) AS "Representante de Ventas", (SELECT ciudad FROM oficina WHERE oficina.codigo_oficina = empleado.codigo_oficina) AS "Ciudad Oficina" FROM cliente INNER JOIN empleado ON cliente.codigo_empleado_rep_ventas = empleado.codigo_empleado WHERE codigo_cliente NOT IN (S
+ELECT DISTINCT codigo_cliente FROM pago);
++-----------------------------+---------------------------------+----------------------+
+| Nombre Cliente              | Representante de Ventas         | Ciudad Oficina       |
++-----------------------------+---------------------------------+----------------------+
+| Lasas S.A.                  | Mariano López Murcia            | Madrid               |
+| Club Golf Puerta del hierro | Emmanuel Magaña Perez           | Barcelona            |
+| DaraDistribuciones          | Emmanuel Magaña Perez           | Barcelona            |
+| Madrileña de riegos         | Emmanuel Magaña Perez           | Barcelona            |
+| Lasas S.A.                  | Mariano López Murcia            | Madrid               |
+| Flowers, S.A                | Felipe Rosas Marquez            | Talavera de la Reina |
+| Naturajardin                | Julian Bellinelli               | Sydney               |
+| Americh Golf Management SL  | José Manuel Martinez De la Osa  | Barcelona            |
+| Aloha                       | José Manuel Martinez De la Osa  | Barcelona            |
+| El Prat                     | José Manuel Martinez De la Osa  | Barcelona            |
+| Vivero Humanes              | Julian Bellinelli               | Sydney               |
+| Fuenla City                 | Felipe Rosas Marquez            | Talavera de la Reina |
+| Top Campo                   | Felipe Rosas Marquez            | Talavera de la Reina |
+| Campohermoso                | Julian Bellinelli               | Sydney               |
+| france telecom              | Lionel Narvaez                  | Paris                |
+| Musée du Louvre             | Lionel Narvaez                  | Paris                |
+| Flores S.L.                 | Michael Bolton                  | San Francisco        |
+| The Magic Garden            | Michael Bolton                  | San Francisco        |
++-----------------------------+---------------------------------+----------------------+
+18 rows in set (0,00 sec)
 ```
 ### 6. Lista la dirección de las oficinas que tengan clientes en Fuenlabrada
 ```
