@@ -400,6 +400,53 @@ SELECT * FROM cliente WHERE ciudad = "Madrid" AND codigo_empleado_rep_ventas IN 
 ```
 
 ## Consultas multitabla (Composición Interna)
+### 1. Obtén un listado con el nombre de cada cliente y el nombre y apellido de su representante de ventas.
+```
+SELECT nombre_cliente AS "Nombre Cliente", CONCAT (nombre," ", apellido1," ", apellido2) AS "Representante de Ventas"  FROM cliente INNER JOIN empleado ON cliente.codigo_empleado_rep_ventas = empleado.codigo_empleado;
++--------------------------------+---------------------------------+
+| Nombre Cliente                 | Representante de Ventas         |
++--------------------------------+---------------------------------+
+| GoldFish Garden                | Walter Santiago Sanchez Lopez   |
+| Gardening Associates           | Walter Santiago Sanchez Lopez   |
+| Gerudo Valley                  | Lorena Paxton                   |
+| Tendo Garden                   | Lorena Paxton                   |
+| Lasas S.A.                     | Mariano López Murcia            |
+| Beragua                        | Emmanuel Magaña Perez           |
+| Club Golf Puerta del hierro    | Emmanuel Magaña Perez           |
+| Naturagua                      | Emmanuel Magaña Perez           |
+| DaraDistribuciones             | Emmanuel Magaña Perez           |
+| Madrileña de riegos            | Emmanuel Magaña Perez           |
+| Lasas S.A.                     | Mariano López Murcia            |
+| Camunas Jardines S.L.          | Mariano López Murcia            |
+| Dardena S.A.                   | Mariano López Murcia            |
+| Jardin de Flores               | Julian Bellinelli               |
+| Flores Marivi                  | Felipe Rosas Marquez            |
+| Flowers, S.A                   | Felipe Rosas Marquez            |
+| Naturajardin                   | Julian Bellinelli               |
+| Golf S.A.                      | José Manuel Martinez De la Osa  |
+| Americh Golf Management SL     | José Manuel Martinez De la Osa  |
+| Aloha                          | José Manuel Martinez De la Osa  |
+| El Prat                        | José Manuel Martinez De la Osa  |
+| Sotogrande                     | José Manuel Martinez De la Osa  |
+| Vivero Humanes                 | Julian Bellinelli               |
+| Fuenla City                    | Felipe Rosas Marquez            |
+| Jardines y Mansiones Cactus SL | Lucio Campoamor Martín          |
+| Jardinerías Matías SL          | Lucio Campoamor Martín          |
+| Agrojardin                     | Julian Bellinelli               |
+| Top Campo                      | Felipe Rosas Marquez            |
+| Jardineria Sara                | Felipe Rosas Marquez            |
+| Campohermoso                   | Julian Bellinelli               |
+| france telecom                 | Lionel Narvaez                  |
+| Musée du Louvre                | Lionel Narvaez                  |
+| Tutifruti S.A                  | Mariko Kishi                    |
+| Flores S.L.                    | Michael Bolton                  |
+| The Magic Garden               | Michael Bolton                  |
+| El Jardin Viviente S.L         | Mariko Kishi                    |
++--------------------------------+---------------------------------+
+36 rows in set (0,00 sec)
+
+```
+
 ### 2. Muestra el nombre de los clientes que hayan realizado pagos junto con el nombre de sus representantes de ventas.
 ```
 SELECT nombre_cliente AS "Nombre Cliente", CONCAT (nombre," ", apellido1," ", apellido2) AS "Representante de Ventas"  FROM cliente INNER JOIN empleado ON cliente.codigo_empleado_rep_ventas = empleado.codigo_empleado WHERE codigo_cliente IN (SELECT DISTINCT codigo_cliente FROM pago);
@@ -426,6 +473,88 @@ SELECT nombre_cliente AS "Nombre Cliente", CONCAT (nombre," ", apellido1," ", ap
 | Tutifruti S.A                  | Mariko Kishi                    |
 +--------------------------------+---------------------------------+
 18 rows in set (0,00 sec)
+```
+### 3. Muestra el nombre de los clientes que no hayan realizado pagos junto con el nombre de sus representantes de ventas.
+```
+SELECT nombre_cliente AS "Nombre Cliente", CONCAT (nombre," ", apellido1," ", apellido2) AS "Representante de Ventas"  FROM cliente INNER JOIN empleado ON cliente.codigo_empleado_rep_ventas = empleado.codigo_empleado WHERE codigo_cliente NOT IN (SELECT DISTINCT codigo_cliente FROM pago);
++-----------------------------+---------------------------------+
+| Nombre Cliente              | Representante de Ventas         |
++-----------------------------+---------------------------------+
+| Lasas S.A.                  | Mariano López Murcia            |
+| Club Golf Puerta del hierro | Emmanuel Magaña Perez           |
+| DaraDistribuciones          | Emmanuel Magaña Perez           |
+| Madrileña de riegos         | Emmanuel Magaña Perez           |
+| Lasas S.A.                  | Mariano López Murcia            |
+| Flowers, S.A                | Felipe Rosas Marquez            |
+| Naturajardin                | Julian Bellinelli               |
+| Americh Golf Management SL  | José Manuel Martinez De la Osa  |
+| Aloha                       | José Manuel Martinez De la Osa  |
+| El Prat                     | José Manuel Martinez De la Osa  |
+| Vivero Humanes              | Julian Bellinelli               |
+| Fuenla City                 | Felipe Rosas Marquez            |
+| Top Campo                   | Felipe Rosas Marquez            |
+| Campohermoso                | Julian Bellinelli               |
+| france telecom              | Lionel Narvaez                  |
+| Musée du Louvre             | Lionel Narvaez                  |
+| Flores S.L.                 | Michael Bolton                  |
+| The Magic Garden            | Michael Bolton                  |
++-----------------------------+---------------------------------+
+18 rows in set (0,00 sec)
+```
+### 4. Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+```
+ELECT nombre_cliente AS "Nombre Cliente", CONCAT (nombre," ", apellido1," ", apellido2) AS "Representante de Ventas", (SELECT ciudad FROM oficina WHERE oficina.codigo_oficina = empleado.codigo_oficina) AS "Ciudad Oficina" FROM cliente INNER JOIN empleado ON cliente.codigo_empleado_rep_ventas = empleado.codigo_empleado WHERE codigo_cliente IN (SELEC
+T DISTINCT codigo_cliente FROM pago);
++--------------------------------+---------------------------------+----------------------+
+| Nombre Cliente                 | Representante de Ventas         | Ciudad Oficina       |
++--------------------------------+---------------------------------+----------------------+
+| Jardineria Sara                | Felipe Rosas Marquez            | Talavera de la Reina |
+| Flores Marivi                  | Felipe Rosas Marquez            | Talavera de la Reina |
+| Dardena S.A.                   | Mariano López Murcia            | Madrid               |
+| Camunas Jardines S.L.          | Mariano López Murcia            | Madrid               |
+| Jardinerías Matías SL          | Lucio Campoamor Martín          | Madrid               |
+| Jardines y Mansiones Cactus SL | Lucio Campoamor Martín          | Madrid               |
+| Naturagua                      | Emmanuel Magaña Perez           | Barcelona            |
+| Beragua                        | Emmanuel Magaña Perez           | Barcelona            |
+| Sotogrande                     | José Manuel Martinez De la Osa  | Barcelona            |
+| Golf S.A.                      | José Manuel Martinez De la Osa  | Barcelona            |
+| Gardening Associates           | Walter Santiago Sanchez Lopez   | San Francisco        |
+| GoldFish Garden                | Walter Santiago Sanchez Lopez   | San Francisco        |
+| Tendo Garden                   | Lorena Paxton                   | Boston               |
+| Gerudo Valley                  | Lorena Paxton                   | Boston               |
+| Agrojardin                     | Julian Bellinelli               | Sydney               |
+| Jardin de Flores               | Julian Bellinelli               | Sydney               |
+| El Jardin Viviente S.L         | Mariko Kishi                    | Sydney               |
+| Tutifruti S.A                  | Mariko Kishi                    | Sydney               |
++--------------------------------+---------------------------------+----------------------+
+18 rows in set (0,00 sec)
+```
+### 5. Devuelve el nombre de los clientes que no hayan hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+```
+SELECT nombre_cliente AS "Nombre Cliente", CONCAT (nombre," ", apellido1," ", apellido2) AS "Representante de Ventas", codigo_oficina AS "Ciudad Oficina"  FROM cliente INNER JOIN empleado ON cliente.codigo_empleado_rep_ventas = empleado.codigo_empleado WHERE codigo_cliente NOT IN (SELECT DISTINCT codigo_cliente FROM pago);
++-----------------------------+---------------------------------+----------------+
+| Nombre Cliente              | Representante de Ventas         | Ciudad Oficina |
++-----------------------------+---------------------------------+----------------+
+| Lasas S.A.                  | Mariano López Murcia            | MAD-ES         |
+| Club Golf Puerta del hierro | Emmanuel Magaña Perez           | BCN-ES         |
+| DaraDistribuciones          | Emmanuel Magaña Perez           | BCN-ES         |
+| Madrileña de riegos         | Emmanuel Magaña Perez           | BCN-ES         |
+| Lasas S.A.                  | Mariano López Murcia            | MAD-ES         |
+| Flowers, S.A                | Felipe Rosas Marquez            | TAL-ES         |
+| Naturajardin                | Julian Bellinelli               | SYD-AU         |
+| Americh Golf Management SL  | José Manuel Martinez De la Osa  | BCN-ES         |
+| Aloha                       | José Manuel Martinez De la Osa  | BCN-ES         |
+| El Prat                     | José Manuel Martinez De la Osa  | BCN-ES         |
+| Vivero Humanes              | Julian Bellinelli               | SYD-AU         |
+| Fuenla City                 | Felipe Rosas Marquez            | TAL-ES         |
+| Top Campo                   | Felipe Rosas Marquez            | TAL-ES         |
+| Campohermoso                | Julian Bellinelli               | SYD-AU         |
+| france telecom              | Lionel Narvaez                  | PAR-FR         |
+| Musée du Louvre             | Lionel Narvaez                  | PAR-FR         |
+| Flores S.L.                 | Michael Bolton                  | SFC-USA        |
+| The Magic Garden            | Michael Bolton                  | SFC-USA        |
++-----------------------------+---------------------------------+----------------+
+18 rows in set (0,01 sec)
 ```
 ### 6. Lista la dirección de las oficinas que tengan clientes en Fuenlabrada
 ```
